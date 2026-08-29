@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
@@ -10,8 +10,8 @@ function App() {
   const [question, setQuestion] = useState("Explain overfitting in simple words.");
   const [result, setResult] = useState();
   const [status, setStatus] = useState("");
-  const refresh = () => fetch(`${API}/documents`).then((r) => r.json()).then(setDocuments);
-  useEffect(() => { refresh().catch(() => setStatus("The API is not running yet.")); }, []);
+  const refresh = useCallback(() => fetch(`${API}/documents`).then((r) => r.json()).then(setDocuments), []);
+  useEffect(() => { refresh().catch(() => setStatus("The API is not running yet.")); }, [refresh]);
 
   async function upload(event) {
     event.preventDefault();
