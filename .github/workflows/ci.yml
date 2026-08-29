@@ -13,8 +13,10 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r backend/requirements.txt
-      - run: pytest tests
+      - run: python -m pytest tests
         working-directory: backend
+        env:
+          PYTHONPATH: .
   frontend:
     runs-on: ubuntu-latest
     steps:
