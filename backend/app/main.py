@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 import os
 import re
 import uuid
 from collections import Counter
 from pathlib import Path
+from typing import Optional
 
 import httpx
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -35,7 +38,7 @@ class Source(BaseModel):
 
 class AskRequest(BaseModel):
     question: str = Field(min_length=3, max_length=500)
-    document_ids: list[str] | None = None
+    document_ids: Optional[list[str]] = None
 
 
 class AskResponse(BaseModel):
@@ -88,7 +91,7 @@ def read_documents() -> list[dict]:
     return documents
 
 
-def retrieve(question: str, allowed_ids: list[str] | None = None, limit: int = 4) -> list[dict]:
+def retrieve(question: str, allowed_ids: Optional[list[str]] = None, limit: int = 4) -> list[dict]:
     candidates = []
     for document in read_documents():
         if allowed_ids and document["id"] not in allowed_ids:
